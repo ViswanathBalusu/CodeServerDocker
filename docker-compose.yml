@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  CodeServer:
+    image: ghcr.io/viswanathbalusu/codeserver:latest 
+    container_name: codeserver
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Kolkata
+      - INNER_PORT=10808
+    volumes:
+      - /your/path/Code-Server:/Code-Server
+      # Make a script to run everything you want
+      - /your/path/to/start.sh:/start.sh
+      # To run Docker inside Container
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 10808:10808
+    privileged: true
+    command: bash start.sh
