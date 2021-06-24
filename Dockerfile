@@ -45,18 +45,6 @@ RUN apt-get install -y libssl-dev \
                        g++ \
                        make \
                        cmake \
-                       binutils-doc cpp-doc gcc-9-locales debian-keyring g++-multilib \
-                       g++-9-multilib gcc-9-doc gcc-multilib autoconf automake libtool flex bison \
-                       gdb gcc-doc gcc-9-multilib glibc-doc git bzr gdbm-l10n libstdc++-9-doc \
-                       make-doc man-browser ed diffutils-doc perl-doc libterm-readline-gnu-perl \
-                       libterm-readline-perl-perl libb-debug-perl liblocale-codes-perl \
-                       mailx postgresql-doc postgresql-doc-12 libjson-perl openssl-blacklist \
-                       default-jre pcscd openjdk-14-demo openjdk-14-source libnss-mdns \
-                       fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho \
-                       fonts-wqy-zenhei fonts-indic \
-                       apache2-doc apache2-suexec-custom ufw php-pear \
-                       bundler \
-                       colord gvfs \
                        uidmap \
                        m4
                        
