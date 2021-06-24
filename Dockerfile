@@ -12,6 +12,7 @@ RUN apt-get -qq update && \
     rm -rf /var/lib/apt/lists/* && \
     apt-add-repository multiverse && \
     apt-add-repository universe && \
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \
     apt-get -qq update && \
     apt-get install -y build-essential
 
@@ -21,6 +22,7 @@ RUN apt-get update && apt-get -qqy upgrade
 #More Libs
 RUN apt-get install -y libssl-dev \
                        libcurl4-openssl-dev \
+                       manpages-dev \
                        python-dev \
                        libc-ares-dev \
                        autoconf \
@@ -55,6 +57,8 @@ RUN apt-get install -y wget \
                        zip \
                        xz-utils \
                        htop \
+                       gcc-11 \
+                       g++-11 \
                        ffmpeg \
                        pv \
                        jq \
@@ -170,13 +174,13 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
 # Compile Python 3.8
 RUN wget https://www.python.org/ftp/python/$PY38VER/Python-$PY38VER.tar.xz && \
     tar -xf Python-$PY38VER.tar.xz && rm -rf Python-$PY38VER.tar.xz && cd Python-$PY38VER && \
-    ./configure --enable-optimizations --enable-shared && make -j$(nproc) && \
+    CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
     make altinstall && cd .. && rm -rf Python-$PY38VER
 
 # Compile Python 3.8
 RUN wget https://www.python.org/ftp/python/$PY39VER/Python-$PY39VER.tar.xz && \
     tar -xf Python-$PY39VER.tar.xz && rm -rf Python-$PY39VER.tar.xz && cd Python-$PY39VER && \
-    ./configure --enable-optimizations --enable-shared && make -j$(nproc) && \
+    CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
     make altinstall && cd .. && rm -rf Python-$PY39VER
 
 # C#
