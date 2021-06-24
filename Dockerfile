@@ -45,6 +45,18 @@ RUN apt-get install -y libssl-dev \
                        g++ \
                        make \
                        cmake \
+                       binutils-doc cpp-doc gcc-9-locales debian-keyring g++-multilib \
+                       g++-9-multilib gcc-9-doc gcc-multilib autoconf automake libtool flex bison \
+                       gdb gcc-doc gcc-9-multilib glibc-doc git bzr gdbm-l10n libstdc++-9-doc \
+                       make-doc man-browser ed diffutils-doc perl-doc libterm-readline-gnu-perl \
+                       libterm-readline-perl-perl libb-debug-perl liblocale-codes-perl \
+                       mailx postgresql-doc postgresql-doc-12 libjson-perl openssl-blacklist \
+                       default-jre pcscd openjdk-14-demo openjdk-14-source libnss-mdns \
+                       fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho \
+                       fonts-wqy-zenhei fonts-indic \
+                       apache2-doc apache2-suexec-custom ufw php-pear \
+                       bundler \
+                       colord gvfs \
                        uidmap \
                        m4
                        
@@ -106,7 +118,7 @@ RUN wget -q https://github.com/browsh-org/browsh/releases/download/v1.6.4/browsh
     apt-get install -y ./browsh_1.6.4_linux_amd64.deb && rm -rf browsh_1.6.4_linux_amd64.deb
 
 #Node JS
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash && \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash && \
     #Node JS and NPM
     apt-get install -y nodejs && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -139,7 +151,7 @@ RUN apt-add-repository -y ppa:brightbox/ruby-ng && \
     apt-get install -y ruby2.5   
 
 #Clang
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     #Adding Repo
     add-apt-repository -y "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main" && \ 
     # LLVM
@@ -177,7 +189,7 @@ RUN wget https://www.python.org/ftp/python/$PY38VER/Python-$PY38VER.tar.xz && \
     CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
     make altinstall && cd .. && rm -rf Python-$PY38VER
 
-# Compile Python 3.8
+# Compile Python 3.9
 RUN wget https://www.python.org/ftp/python/$PY39VER/Python-$PY39VER.tar.xz && \
     tar -xf Python-$PY39VER.tar.xz && rm -rf Python-$PY39VER.tar.xz && cd Python-$PY39VER && \
     CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
