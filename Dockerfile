@@ -1,6 +1,5 @@
 FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
-LABEL maintainer="YZOP"
 
 ENV PY38VER "3.8.10"
 ENV PY39VER "3.9.5"
@@ -202,3 +201,6 @@ RUN echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" \
     apt update && \
     apt install -y caddy \
                    module-assistant
+                   
+#Docker
+RUN curl -sSL https://get.docker.com | sh
