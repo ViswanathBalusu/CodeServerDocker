@@ -2,7 +2,7 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 ENV PY38VER "3.8.10"
-ENV PY39VER "3.9.5"
+ENV PY39VER "3.9.6"
 ENV LD_LIBRARY_PATH "/usr/local/lib"
 #Upgrade Everything
 RUN apt-get -qq update && \
