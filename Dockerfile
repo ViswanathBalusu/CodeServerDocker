@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV PY38VER "3.8.10"
+ENV PY310VER "3.10.0"
 ENV PY39VER "3.9.6"
 ENV LD_LIBRARY_PATH "/usr/local/lib"
 #Upgrade Everything
@@ -105,7 +105,7 @@ RUN wget -q https://github.com/browsh-org/browsh/releases/download/v1.6.4/browsh
     apt-get install -y ./browsh_1.6.4_linux_amd64.deb && rm -rf browsh_1.6.4_linux_amd64.deb
 
 #Node JS
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash && \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash && \
     #Node JS and NPM
     apt-get install -y nodejs && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -117,11 +117,6 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash && \
 #PostgreSQL
 RUN apt-get -y install postgresql \
                postgresql-contrib
-#MongoDir
-RUN mkdir -p /data/db && \
-    mkdir -p /log/mongo && \
-    chmod 777 /data/db && \
-    chmod 777 /log/mongo
 #Nginx
 RUN apt-get install -y nginx
 
@@ -170,17 +165,23 @@ RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     # OpenMP
     apt-get install -y libomp-11-dev
 
-# Compile Python 3.8
-RUN wget https://www.python.org/ftp/python/$PY38VER/Python-$PY38VER.tar.xz && \
-    tar -xf Python-$PY38VER.tar.xz && rm -rf Python-$PY38VER.tar.xz && cd Python-$PY38VER && \
-    CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
-    make altinstall && cd .. && rm -rf Python-$PY38VER
+# # Compile Python 3.8
+# RUN wget https://www.python.org/ftp/python/$PY38VER/Python-$PY38VER.tar.xz && \
+#     tar -xf Python-$PY38VER.tar.xz && rm -rf Python-$PY38VER.tar.xz && cd Python-$PY38VER && \
+#     CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
+#     make altinstall && cd .. && rm -rf Python-$PY38VER
 
 # Compile Python 3.9
 RUN wget https://www.python.org/ftp/python/$PY39VER/Python-$PY39VER.tar.xz && \
     tar -xf Python-$PY39VER.tar.xz && rm -rf Python-$PY39VER.tar.xz && cd Python-$PY39VER && \
     CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
     make altinstall && cd .. && rm -rf Python-$PY39VER
+    
+# Compile Python 3.10
+RUN wget https://www.python.org/ftp/python/$PY310VER/Python-$PY310VER.tar.xz && \
+    tar -xf Python-$PY310VER.tar.xz && rm -rf Python-$PY310VER.tar.xz && cd Python-$PY310VER && \
+    CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
+    make altinstall && cd .. && rm -rf Python-$PY310VER
 
 # C#
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
@@ -202,5 +203,5 @@ RUN echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" \
     apt install -y caddy \
                    module-assistant
                    
-#Docker
-RUN curl -sSL https://get.docker.com | sh
+# #Docker
+# RUN curl -sSL https://get.docker.com | sh
