@@ -1,8 +1,8 @@
-FROM ubuntu:latest
+FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 ENV PY310VER "3.10.0"
-ENV PY39VER "3.9.6"
+ENV PY39VER "3.9.8"
 ENV LD_LIBRARY_PATH "/usr/local/lib"
 #Upgrade Everything
 RUN apt-get -qq update && \
@@ -121,7 +121,15 @@ RUN apt-get -y install postgresql \
 RUN apt-get install -y nginx
 
 #Java
-RUN apt-get install -y openjdk-14-jdk-headless
+RUN wget https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public && \
+    gpg --no-default-keyring --keyring ./adoptopenjdk-keyring.gpg --import public && \
+    gpg --no-default-keyring --keyring ./adoptopenjdk-keyring.gpg --export --output adoptopenjdk-archive-keyring.gpg && \
+    rm adoptopenjdk-keyring.gpg && \
+    mv adoptopenjdk-archive-keyring.gpg /usr/share/keyrings  && \
+    echo "deb [signed-by=/usr/share/keyrings/adoptopenjdk-archive-keyring.gpg] https://adoptopenjdk.jfrog.io/adoptopenjdk/deb focal main" | sudo tee /etc/apt/sources.list.d/adoptopenjdk.list && \
+    apt-get update && \
+    apt-get install -y adoptopenjdk-11-hotspot && \
+    rm -rf ./public
 
 # Php
 RUN add-apt-repository -y ppa:ondrej/php && \
@@ -165,12 +173,6 @@ RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     # OpenMP
     apt-get install -y libomp-11-dev
 
-# # Compile Python 3.8
-# RUN wget https://www.python.org/ftp/python/$PY38VER/Python-$PY38VER.tar.xz && \
-#     tar -xf Python-$PY38VER.tar.xz && rm -rf Python-$PY38VER.tar.xz && cd Python-$PY38VER && \
-#     CC=/usr/bin/gcc-11 ./configure --enable-optimizations --enable-shared && make -j$(nproc --all) && \
-#     make altinstall && cd .. && rm -rf Python-$PY38VER
-
 # Compile Python 3.9
 RUN wget https://www.python.org/ftp/python/$PY39VER/Python-$PY39VER.tar.xz && \
     tar -xf Python-$PY39VER.tar.xz && rm -rf Python-$PY39VER.tar.xz && cd Python-$PY39VER && \
@@ -203,5 +205,5 @@ RUN echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" \
     apt install -y caddy \
                    module-assistant
                    
-# #Docker
-# RUN curl -sSL https://get.docker.com | sh
+#Docker
+RUN curl -sSL https://get.docker.com | sh
